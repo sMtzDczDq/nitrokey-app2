@@ -1,10 +1,18 @@
-.PHONY: clean 
+.PHONY: clean
 
 PACKAGE_NAME=nitrokeyapp
 PYTHON=python3
 VENV=$(shell poetry env info --path)
 VENV_BIN=$(VENV)/bin
 VENV_PYTHON=$(VENV_BIN)/$(PYTHON)
+#https://stackoverflow.com/questions/714100/os-detecting-makefile#12099167
+ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
+    detected_OS := Windows
+    $(error "Detected Windows $(detected_OS)")
+else
+    detected_OS := $(shell uname)  # same as "uname -s"
+endif
+
 
 ALL: init build
 
