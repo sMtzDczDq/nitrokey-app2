@@ -6,3 +6,4 @@ nitrokeyapp/ui/*.py
 build/
 dist/
 /pkg
+.idea/

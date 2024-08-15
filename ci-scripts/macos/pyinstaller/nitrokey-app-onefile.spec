@@ -38,7 +38,6 @@ a = Analysis(
 )
 pyz = PYZ(a.pure)
 
-
 exe = EXE(
     pyz,
     a.scripts,

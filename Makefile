@@ -1,16 +1,15 @@
 .PHONY: clean
 
 PACKAGE_NAME=nitrokeyapp
-PYTHON=python3
+PYTHON=python3.11
 VENV=$(shell poetry env info --path)
 VENV_BIN=$(VENV)/bin
 VENV_PYTHON=$(VENV_BIN)/$(PYTHON)
 #https://stackoverflow.com/questions/714100/os-detecting-makefile#12099167
-ifeq ($(OS),Windows_NT)     # is Windows_NT on XP, 2000, 7, Vista, 10...
-    detected_OS := Windows
-    $(error "Detected Windows $(detected_OS)")
+ifeq ($(OS),Windows_NT)
+    uname_S := Windows
 else
-    detected_OS := $(shell uname)  # same as "uname -s"
+    uname_S := $(shell uname -s)
 endif
 
 
@@ -42,10 +41,13 @@ build:
 	poetry build
 
 build-pyinstaller-onefile:
-	$(VENV_BIN)/pyinstaller ci-scripts/linux/pyinstaller/nitrokey-app-onefile.spec
+ifeq (uname_S,Darwin)
+target = macos
+endif
+	$(VENV_BIN)/pyinstaller ci-scripts/$(target)/pyinstaller/nitrokey-app-onefile.spec
 
 build-pyinstaller-onedir:
-	$(VENV_BIN)/pyinstaller ci-scripts/linux/pyinstaller/nitrokey-app-onedir.spec
+	$(VENV_BIN)/pyinstaller ci-scripts/$(os)/pyinstaller/nitrokey-app-onedir.spec
 
 # code checks
 check-format:
